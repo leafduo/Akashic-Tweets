@@ -1,4 +1,5 @@
 var twitter = require('ntwitter');
+var util = require('util');
 
 var twit = new twitter({
     consumer_key: 'ielc4kBgSYdaBI4p2KQ9rw',
@@ -9,6 +10,6 @@ var twit = new twitter({
 
 twit.stream('user', function(stream) {
     stream.on('data', function(data) {
-        console.log(data);
+        console.log(util.inspect(data, false, null));
     });
 });
