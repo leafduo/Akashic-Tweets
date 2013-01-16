@@ -1,5 +1,6 @@
 var twitter = require('ntwitter');
 var util = require('util');
+var mongojs = require('mongojs');
 
 var twit = new twitter({
     consumer_key: 'ielc4kBgSYdaBI4p2KQ9rw',
@@ -8,8 +9,11 @@ var twit = new twitter({
     access_token_secret: 'WhPhBY8ODigjRhEB7NTH9mIbq1FTXy4XfEfR13Ex5M'
 });
 
+var db = mongojs('akashic', ['rawTweet']);
+
 twit.stream('user', function(stream) {
     stream.on('data', function(data) {
+        db.rawTweet.insert(data);
         console.log(util.inspect(data, false, null));
     });
 });
