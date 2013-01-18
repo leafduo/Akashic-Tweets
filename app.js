@@ -19,9 +19,11 @@ function run() {
             console.log(util.inspect(data, false, null));
         });
         stream.on('end', function(response) {
+            db.rawTweet.insert(response);
             run();
         });
         stream.on('destory', function(response) {
+            db.rawTweet.insert(response);
             run();
         });
     });
