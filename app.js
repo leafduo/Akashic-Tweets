@@ -12,9 +12,19 @@ var twit = new twitter({
 
 var db = mongojs('akashic', ['rawTweet']);
 
-twit.stream('user', function(stream) {
-    stream.on('data', function(data) {
-        db.rawTweet.insert(data);
-        console.log(util.inspect(data, false, null));
+function run() {
+    twit.stream('user', function(stream) {
+        stream.on('data', function(data) {
+            db.rawTweet.insert(data);
+            console.log(util.inspect(data, false, null));
+        });
+        stream.on('end', function(response) {
+            run();
+        });
+        stream.on('destory', function(response) {
+            run();
+        });
     });
-});
+}
+
+run();
