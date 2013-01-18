@@ -10,20 +10,20 @@ var twit = new twitter({
     access_token_secret: config.twitter.accessTokenSecret
 });
 
-var db = mongojs('akashic', ['rawTweet']);
+var db = mongojs('akashic', ['stream']);
 
 function run() {
     twit.stream('user', function(stream) {
         stream.on('data', function(data) {
-            db.rawTweet.insert(data);
+            db.stream.insert(data);
             console.log(util.inspect(data, false, null));
         });
         stream.on('end', function(response) {
-            db.rawTweet.insert(response);
+            db.stream.insert(response);
             run();
         });
         stream.on('destory', function(response) {
-            db.rawTweet.insert(response);
+            db.stream.insert(response);
             run();
         });
     });
